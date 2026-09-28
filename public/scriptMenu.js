@@ -51,10 +51,20 @@ let cardInfo = fetch("/products")
 
             addBtn.addEventListener("click", function(){
 
+                let existItem = cart.find(item => item.id == pos.id)
+                if (existItem) {
+                    existItem.quantity++
+                }
+
+                else{
+                    pos.quantity = 1
+                    cart.push(pos)
+                }
+                
+                calcTotal() 
                 
 
-                cart.push(pos)
-
+                cartRender()
                 console.log(cart)
                 
             })
@@ -64,16 +74,18 @@ let cardInfo = fetch("/products")
 
 
 let cart = []
+
+
 let cartDiv = document.querySelector(".cart")
+let cartBut = document.querySelector(".cartBut")
+let cartCont = document.querySelector(".cartCont")
 function cartRender() {
-    
-    cart.forEach(function(item){
+    cartCont.innerHTML = ""
 
-        let closeBut = document.createElement("button")
-            closeBut.addEventListener("click", function(){
-                cartDiv.classList.toggle("closed")
-            })
+    cart.forEach(function(item, index){
 
+        
+       
         let cartCard = document.createElement("div")
         cartCard.classList.add("Icard")
         cartCont.appendChild(cartCard)
@@ -81,6 +93,9 @@ function cartRender() {
         let name = document.createElement("h3")
         name.classList.add("Iname")
         name.textContent = item.name
+
+        let quantity = document.createElement("p")
+        quantity.textContent = "x" + item.quantity
 
         let img = document.createElement("img")
         img.classList.add("Iimg")
@@ -96,18 +111,32 @@ function cartRender() {
 
 
         cartCard.appendChild(name)
+        cartCard.appendChild(quantity)
         cartCard.appendChild(img)
         cartCard.appendChild(price)
         cartCard.appendChild(delBut)
         
         delBut.addEventListener("click", function(){
 
-            cart.splice(item, 1)
+            
 
-            cartRender()
+            let existItem = cart.find(item1 => item1.id == item.id)
+                if (existItem.quantity > 1) {
+                    existItem.quantity--
+                }
+
+                else{
+                     cart.splice(index, 1)
+                }
+
+           
+            
 
             console.log(cart)
-
+            calcTotal() 
+            
+               
+            cartRender()
         })
 
         
@@ -117,13 +146,22 @@ function cartRender() {
 
     })
 }
-
-let cartBut = document.querySelector(".cartBut")
-let cartCont = document.querySelector(".cartCont")
-
-cartBut.addEventListener("click", function(){
-
-    cartRender()
+let toPay = document.querySelector(".total")
 
 
-})
+function calcTotal() {
+            toPay.textContent = ""
+
+    let total = cart.reduce(function(sum, product1){
+
+        return sum + product1.price * product1.quantity
+        
+    }, 0)
+            
+            toPay.textContent = "Total to pay: $" + total
+    
+}
+
+
+
+
