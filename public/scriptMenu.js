@@ -7,6 +7,8 @@ let cardInfo = fetch("/products")
 .then(function(position){
     position.forEach(function(pos){
 
+        
+
             let card = document.createElement("div")
             card.classList.add("card")
 
@@ -62,15 +64,15 @@ let cardInfo = fetch("/products")
 
 
 let cart = []
-
-
-
-let cartBut = document.querySelector(".cartBut")
-let cartCont = document.querySelector(".cartCont")
-
-cartBut.addEventListener("click", function(){
-
+let cartDiv = document.querySelector(".cart")
+function cartRender() {
+    
     cart.forEach(function(item){
+
+        let closeBut = document.createElement("button")
+            closeBut.addEventListener("click", function(){
+                cartDiv.classList.toggle("closed")
+            })
 
         let cartCard = document.createElement("div")
         cartCard.classList.add("Icard")
@@ -102,7 +104,7 @@ cartBut.addEventListener("click", function(){
 
             cart.splice(item, 1)
 
-
+            cartRender()
 
             console.log(cart)
 
@@ -114,6 +116,14 @@ cartBut.addEventListener("click", function(){
 
 
     })
+}
+
+let cartBut = document.querySelector(".cartBut")
+let cartCont = document.querySelector(".cartCont")
+
+cartBut.addEventListener("click", function(){
+
+    cartRender()
 
 
 })
