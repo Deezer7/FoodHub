@@ -1,3 +1,21 @@
+
+
+function saveCart() {
+    localStorage.setItem("cart", JSON.stringify(cart)) 
+}
+
+function loadCart() {
+    let storedCart = localStorage.getItem("cart")
+
+    if(storedCart) {
+        cart = JSON.parse(storedCart)
+    }
+}
+
+
+
+
+
 let cards = document.querySelector(".cards")
 
 let cardInfo = fetch("/products")
@@ -65,6 +83,8 @@ let cardInfo = fetch("/products")
                 
 
                 cartRender()
+
+                saveCart()
                 console.log(cart)
                 
             })
@@ -137,6 +157,7 @@ function cartRender() {
             
                
             cartRender()
+            saveCart()
         })
 
         
@@ -164,4 +185,25 @@ function calcTotal() {
 
 
 
+let placeOrderBut = document.querySelector(".placeOrder")
+
+placeOrderBut.addEventListener("click", function(){
+    fetch("/orders", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            cart: cart
+        })
+    }
+
+
+
+    )
+})
+
+loadCart()
+cartRender()
+calcTotal()
 

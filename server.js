@@ -39,6 +39,47 @@ app.get("/products", async function(req, res){
 
 });
 
+let total = 0
+
+app.post("/orders", async function(req, res){
+
+    let cart = req.body.cart
+
+    for(let item of cart){
+        let id = item.id
+        let quantity = item.quantity
+
+        let result = await pool.query(
+            "SELECT id, price FROM products WHERE id = $1",
+            [id]
+        )
+
+        let price = result.rows[0].price
+        
+        let subtotal = price * quantity
+
+        total = total + subtotal
+
+        
+
+        
+
+        console.log
+    }
+        let ordersResult = await pool.query(
+            `INSERT INTO orders (user_id, status, total)
+            VALUES ($1, $2, $3)
+            RETURNING id`,
+            [ null, "pending", total]) 
+            
+            let orderId = ordersResult.rows[0].id
+
+})
+
+
+
+
+
 app.listen(3000, function(){
     console.log("http://localhost:3000")
 });
