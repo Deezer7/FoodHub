@@ -39,11 +39,12 @@ app.get("/products", async function(req, res){
 
 });
 
-let total = 0
+
 
 app.post("/orders", async function(req, res){
 
     let cart = req.body.cart
+    let total = 0
 
     for(let item of cart){
         let id = item.id
@@ -64,7 +65,7 @@ app.post("/orders", async function(req, res){
 
         
 
-        console.log
+        
     }
         let ordersResult = await pool.query(
             `INSERT INTO orders (user_id, status, total)
@@ -73,11 +74,31 @@ app.post("/orders", async function(req, res){
             [ null, "pending", total]) 
             
             let orderId = ordersResult.rows[0].id
+            console.log(orderId)
+
+            for(let item of cart){
+                let id = item.id
+                let quantity = item.quantity
+                
+                let result = await pool.query(
+                    "SELECT id, price FROM products WHERE id = $1",
+                    [id]
+                )
+
+                    let price = result.rows[0].price
+
+                    await pool.query(`INSERT INTO order_items (order_id, product_id, quantity, price)
+                        VALUES($1, $2, $3, $4)`,
+                        [orderId, id, quantity, price ]
+                    )
+            }
 
 })
 
 
-
+app.get("/admin", function(req, res){
+    res.sendFile(__dirname + "/public/adminMain.html")
+})
 
 
 app.listen(3000, function(){
