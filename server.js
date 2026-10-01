@@ -100,6 +100,13 @@ app.get("/admin", function(req, res){
     res.sendFile(__dirname + "/public/adminMain.html")
 })
 
+app.get("/adminOrders", async function(req, res){
+
+    let response = await pool.query('SELECT * FROM orders')
+
+    res.json(response.rows)
+})
+
 
 app.listen(3000, function(){
     console.log("http://localhost:3000")
