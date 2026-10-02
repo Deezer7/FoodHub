@@ -107,6 +107,29 @@ app.get("/adminOrders", async function(req, res){
     res.json(response.rows)
 })
 
+app.delete("/adminOrders/:id", async function(req, res){
+
+    let id = Number(req.params.id)
+
+    pool.query('DELETE FROM orders WHERE id = $1',
+        [id],
+        function(error, result){
+            if(error) {
+                return res.status(500).send("DB ERROR")
+            }
+            res.json({message: "Deleted"})
+        }
+    )
+
+})
+
+app.get("adminOrders/open/:id", function(req, res){
+
+    let id = Number(req.params.id)
+
+    res.sendFile(__dirname + "/public/adminOrdersDet.html")
+})
+
 
 app.listen(3000, function(){
     console.log("http://localhost:3000")

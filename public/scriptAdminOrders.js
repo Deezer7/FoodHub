@@ -24,5 +24,37 @@ let order = fetch("/adminOrders")
         orderCard.appendChild(orderTotal)
         
         orderCont.appendChild(orderCard)
+
+        let delBut = document.createElement("button")
+        delBut.textContent = "Delete order"
+
+        delBut.addEventListener("click", function(){
+            let id = orderSect.id
+            fetch("/adminOrders/" + id, {
+                method: "DELETE"
+            })
+            .then(function(res){
+                if(res.ok){
+                    orderCard.remove()
+                }
+            })
+        })
+
+        orderCard.appendChild(delBut)
+
+        let openBut = document.createElement("button")
+        openBut.textContent = "Open order"
+
+        openBut.addEventListener("click", function(){
+            let id = orderSect.id
+            
+            fetch("/adminOrders/" + id,{
+                method: "GET"}
+            )
+        })
+
+        orderCard.appendChild(openBut)
     })
 })
+
+
