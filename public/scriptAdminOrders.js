@@ -48,9 +48,7 @@ let order = fetch("/adminOrders")
         openBut.addEventListener("click", function(){
             let id = orderSect.id
             
-            fetch("/adminOrders/" + id,{
-                method: "GET"}
-            )
+            window.location.href = "adminOrders/open/" + id
         })
 
         orderCard.appendChild(openBut)

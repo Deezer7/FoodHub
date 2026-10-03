@@ -92,7 +92,7 @@ app.post("/orders", async function(req, res){
                         [orderId, id, quantity, price ]
                     )
             }
-
+            res.json({ orderId: orderId })
 })
 
 
@@ -123,13 +123,26 @@ app.delete("/adminOrders/:id", async function(req, res){
 
 })
 
-app.get("adminOrders/open/:id", function(req, res){
+app.get("/public/adminOrders/open/:id", function(req, res){
+
+    
+
+    res.sendFile(__dirname + "/public/adminOrdersDet.html")
+
+
+})
+
+app.get("/api/adminOrders/open/:id", async function(req, res){
 
     let id = Number(req.params.id)
 
-    res.sendFile(__dirname + "/public/adminOrdersDet.html")
-})
+    let order = await pool.query('SELECT orders.id AS order_id, products.name AS product, order_items.quantity AS quantity, order_items.price AS price, orders.status AS status, orders.total AS total FROM orders JOIN order_items ON orders.id = order_items.order_id JOIN products on order_items.product_id = products.id WHERE orders.id = $1',
+        [id]
+    )
 
+    res.json(order.rows)
+    
+})
 
 app.listen(3000, function(){
     console.log("http://localhost:3000")
