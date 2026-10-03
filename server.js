@@ -144,6 +144,28 @@ app.get("/api/adminOrders/open/:id", async function(req, res){
     
 })
 
+app.patch("/api/adminOrders/open/:id", async function(req, res){
+    let id = Number(req.params.id)
+    let status = req.body.status
+
+    await pool.query(
+        `UPDATE orders SET status = $1 WHERE id = $2 `,
+        [status, id]
+    )
+
+    res.json({message: "status updated"})
+    
+})
+
+app.delete("/api/adminOrders/open/:id", async function(req, res){
+    let id = Number(req.params.id)
+
+    await pool.query(`DELETE FROM orders WHERE id = $1`,
+        [id]
+    )
+    res.json({message: "Order deleted"})
+})
+
 app.listen(3000, function(){
     console.log("http://localhost:3000")
 });

@@ -8,8 +8,15 @@
   </head>
   <body>
     <h1>Admin Orders Details</h1>
+    <a href="/public/adminOrders.html"><button>Go back</button></a>
     <div class="orderContainer"></div>
-
+    <select class="status">
+      <option value="Pending">Pending</option>
+      <option value="Processing">Processing</option>
+      <option value="Completed">Completed</option>
+      <option value="Cancelled">Cancelled</option>
+    </select>
+    <button class="delBut">Delete order</button>
     <script src="/public/scriptOrderDetails.js"></script>
   </body>
 </html>
