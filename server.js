@@ -166,6 +166,31 @@ app.delete("/api/adminOrders/open/:id", async function(req, res){
     res.json({message: "Order deleted"})
 })
 
+app.get("/admin/products", async function(req, res){
+
+    let products = await pool.query(`SELECT * FROM products`)
+
+    res.json(products.rows)
+
+})
+
+app.delete("admin/products/:id", async function(req, res){
+    let id = req.params.id
+    
+    await pool.query(`DELETE FROM products WHERE id = $1`,
+        [id]
+    )
+
+    res.json({message: "Product deleted"})
+})
+
+
+
+
+
+
+
+
 app.listen(3000, function(){
     console.log("http://localhost:3000")
 });
