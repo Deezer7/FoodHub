@@ -46,6 +46,67 @@ fetch("/admin/products")
 
             })
         })
+
+        let changeBut = document.createElement("button")
+        changeBut.textContent = "Change product"
+        productCard.appendChild(changeBut)
+        let saveBut = document.createElement("button")
+        saveBut.textContent = "Save changes"
+        saveBut.classList.add("save")
+        productCard.appendChild(saveBut)
+        changeBut.addEventListener("click", function(){
+
+        saveBut.classList.toggle("active")
+        
+
+        let newName = document.createElement("input")
+        newName.value = product.name
+        name.appendChild(newName)
+
+        let newPrice = document.createElement("input")
+        newPrice.value = product.price
+        price.appendChild(newPrice)
+
+        let newDesc = document.createElement("input")
+        newDesc.value = product.description
+        desc.appendChild(newDesc)
+
+        let newCategory = document.createElement("select")
+        fetch("/admin/products/category", {
+            method: "get"
+        })
+        .then(function(res){
+            return res.json()
+        })
+        .then(function(categories){
+        categories.forEach(function(name){
+            let option = document.createElement("option")
+            option.value = name.category
+            option.textContent = name.category
+            newCategory.appendChild(option)
+        })
+    })
+        category.appendChild(newCategory)
+
+        let newAvailable = document.createElement("select")
+        let Isavailable = [true, false]
+        Isavailable.forEach(function(status){
+            let option = document.createElement("option")
+            option.value = status
+            option.textContent = status
+            newAvailable.appendChild(option)
+        })
+        available.appendChild(newAvailable)
+
+        
+            
+        })
+
+        
+        
+
+
+
     })
 
 })

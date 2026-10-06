@@ -174,6 +174,14 @@ app.get("/admin/products", async function(req, res){
 
 })
 
+app.get("/admin/products/category", async function(req, res){
+
+    let categories = await pool.query(`SELECT DISTINCT category FROM products`)
+
+    res.json(categories.rows)
+
+})
+
 app.delete("admin/products/:id", async function(req, res){
     let id = req.params.id
     
@@ -183,6 +191,8 @@ app.delete("admin/products/:id", async function(req, res){
 
     res.json({message: "Product deleted"})
 })
+
+
 
 
 
