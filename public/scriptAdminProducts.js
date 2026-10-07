@@ -5,10 +5,11 @@ fetch("/admin/products")
     return res.json()
 })
 .then(function(products){
-    let productCard = document.createElement("div")
-    container.appendChild(productCard)
+    
+    
     products.forEach(function(product){
-        
+        let productCard = document.createElement("div")
+        container.appendChild(productCard)
         let name = document.createElement("p")
         name.textContent = "Name: "+ product.name
         let price = document.createElement("p")
@@ -36,7 +37,7 @@ fetch("/admin/products")
         delBut.textContent = "Delete product"
         productCard.appendChild(delBut)
         delBut.addEventListener("click", function(){
-            fetch("/admin/orders/" + id, {
+            fetch("/admin/products/" + id, {
                 method: "DELETE"
             })
             .then(function(res){
@@ -54,8 +55,18 @@ fetch("/admin/products")
         saveBut.textContent = "Save changes"
         saveBut.classList.add("save")
         productCard.appendChild(saveBut)
+
+
+
         changeBut.addEventListener("click", function(){
 
+        if (productCard.classList.contains("editing")){
+            
+            return
+            
+        }
+            
+        productCard.classList.add("editing")
         saveBut.classList.toggle("active")
         
 
@@ -99,6 +110,31 @@ fetch("/admin/products")
         available.appendChild(newAvailable)
 
         
+        saveBut.addEventListener("click", function(){
+
+            fetch("/admin/products/" + product.id, {
+                method: "PATCH",
+
+                headers: {"Content-Type": "application/json"},
+
+                body: JSON.stringify({
+                    name: newName.value,
+                    price: Number(newPrice.value),
+                    desc: newDesc.value,
+                    category: newCategory.value,
+                    available: newAvailable.value === "true"
+
+
+                })
+            })
+            .then(function(){
+                location.reload()
+            })
+
+
+        })
+
+
             
         })
 
@@ -106,7 +142,7 @@ fetch("/admin/products")
         
 
 
-
+        
     })
 
 })

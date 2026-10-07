@@ -168,7 +168,7 @@ app.delete("/api/adminOrders/open/:id", async function(req, res){
 
 app.get("/admin/products", async function(req, res){
 
-    let products = await pool.query(`SELECT * FROM products`)
+    let products = await pool.query(`SELECT * FROM products ORDER BY id ASC`)
 
     res.json(products.rows)
 
@@ -182,7 +182,7 @@ app.get("/admin/products/category", async function(req, res){
 
 })
 
-app.delete("admin/products/:id", async function(req, res){
+app.delete("/admin/products/:id", async function(req, res){
     let id = req.params.id
     
     await pool.query(`DELETE FROM products WHERE id = $1`,
@@ -193,7 +193,22 @@ app.delete("admin/products/:id", async function(req, res){
 })
 
 
+app.patch("/admin/products/:id", async function(req, res){
+    let id = Number(req.params.id)
 
+    let name = req.body.name
+    let price = req.body.price
+    let desc = req.body.desc
+    let category = req.body.category
+    let available = req.body.available
+
+    await pool.query (`UPDATE products  SET name = $2, price = $3, description = $4, category = $5, available = $6 WHERE id = $1`, 
+        [id, name, price, desc, category, available]
+    )
+
+    res.json({message: "Product updated"})
+
+})
 
 
 
