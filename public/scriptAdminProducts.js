@@ -146,3 +146,4 @@ fetch("/admin/products")
     })
 
 })
+

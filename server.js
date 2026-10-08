@@ -210,7 +210,10 @@ app.patch("/admin/products/:id", async function(req, res){
 
 })
 
+app.get("/admin/products/create", function(req, res){
 
+    res.sendFile(__dirname + "/public/adminCreateProd.html")
+})
 
 
 
