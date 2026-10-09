@@ -1,7 +1,8 @@
 const express = require("express");
 const { Pool } = require("pg");
-
+const bcrypt = require("bcrypt")
 const app = express();
+const session = require("express-session")
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(express.static(__dirname))
@@ -13,6 +14,16 @@ const pool = new Pool ({
     port: 5432
 
 })
+
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 24
+    }
+}))
 
 pool.query ("SELECT NOW()", function(err, result){
     if (err){
@@ -183,7 +194,7 @@ app.get("/admin/products/category", async function(req, res){
 })
 
 app.delete("/admin/products/:id", async function(req, res){
-    let id = req.params.id
+    let id = Number(req.params.id)
     
     await pool.query(`DELETE FROM products WHERE id = $1`,
         [id]
@@ -239,6 +250,69 @@ app.post("/create", async function(req, res){
 
 })
 
+app.get("/signUp", function(req, res){
+
+    res.sendFile(__dirname + ("/public/signUp.html"))
+
+})
+
+app.post("/register", async function(req, res){
+
+    let name = req.body.name
+    let email = req.body.email
+    let password = req.body.password
+
+    if (!name || !email || !password){
+        res.status(400).send("Complete all fields")
+    }
+
+    let hashed = await bcrypt.hash(password, 10)
+try{
+    await pool.query(`INSERT INTO users (name, email, password_hash) VALUES ($1, $2, $3)`,
+        [name, email, hashed]
+    )
+
+    res.redirect("/logIn")
+}
+catch (err){
+    if (err.code = 23505){
+    return res.status(409).send("This email already exists, try logging in")
+}
+return res.status(500).send("Server error")
+}
+
+})
+
+app.get("/logIn", function(req, res){
+    res.sendFile(__dirname + "/public/logIn.html")
+})
+
+app.post("/loggingIn", async function(req, res){
+
+    let email = req.body.email
+    let password = req.body.password
+
+    let result = await pool.query(`SELECT * FROM users WHERE email = $1`,
+        [email]
+    )
+
+    let user = result.rows[0]
+
+    if(result.rows.length === 0){
+        return res.status(404).send("This email does not exist, try signing up")
+    }
+
+    let compare = await bcrypt.compare(password, result.rows[0].password_hash)
+
+    if (compare === false){
+        return res.status(401).send("Wrong password")
+    }
+
+    req.session.userId = user.id
+
+    res.redirect("/")
+
+})
 
 app.listen(3000, function(){
     console.log("http://localhost:3000")
