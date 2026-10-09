@@ -216,7 +216,28 @@ app.get("/admin/products/create", function(req, res){
 })
 
 
+app.post("/create", async function(req, res){
 
+    let name = req.body.name
+    let price = Number(req.body.price)
+    let description = req.body.description
+    let category = req.body.category
+    let img = req.body.img
+
+    if (!name || !price || !description || !category || !img){
+        return res.status(400).send("Complete all fields")
+
+    }
+    if (!Number.isFinite(price) || price <= 0) {
+    return res.status(400).send("Invalid price")}
+
+    await pool.query(`INSERT INTO products (name, price, description, category, img, available) VALUES ($1, $2, $3, $4, $5, true)`,
+        [name, price, description, category, img]
+    )
+
+    res.redirect("/admin/products/create")
+
+})
 
 
 app.listen(3000, function(){

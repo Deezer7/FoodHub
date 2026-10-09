@@ -37,7 +37,7 @@ fetch("/admin/products")
         delBut.textContent = "Delete product"
         productCard.appendChild(delBut)
         delBut.addEventListener("click", function(){
-            fetch("/admin/products/" + id, {
+            fetch("/admin/products/" + product.id, {
                 method: "DELETE"
             })
             .then(function(res){
@@ -83,6 +83,7 @@ fetch("/admin/products")
         desc.appendChild(newDesc)
 
         let newCategory = document.createElement("select")
+        
         fetch("/admin/products/category", {
             method: "get"
         })
@@ -94,9 +95,10 @@ fetch("/admin/products")
             let option = document.createElement("option")
             option.value = name.category
             option.textContent = name.category
+            
             newCategory.appendChild(option)
         })
-    })
+    }) 
         category.appendChild(newCategory)
 
         let newAvailable = document.createElement("select")
