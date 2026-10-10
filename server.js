@@ -16,7 +16,7 @@ const pool = new Pool ({
 })
 
 app.use(session({
-    secret: process.env.SESSION_SECRET,
+    secret: "some-long-random-secret-for-development",
     resave: false,
     saveUninitialized: false,
     cookie: {
@@ -24,6 +24,45 @@ app.use(session({
         maxAge: 1000 * 60 * 60 * 24
     }
 }))
+
+function authMiddleware(req, res, next) {
+
+    let user = req.session.userId
+
+    if(!user) {
+       return res.redirect("/logIn")
+    }
+
+    next()
+
+}
+
+async function adminMiddleware(req, res, next){
+    let user = req.session.userId
+
+    if(!user){
+        return res.redirect("/logIn")
+    }
+
+try{    let role = await pool.query(`SELECT role FROM users WHERE id = $1`,
+        [user]
+     )
+if (!role.rows[0])
+    { return res.redirect("/signUp")}
+
+
+    if(role.rows[0].role !== "admin"){
+        return res.status(403).send("Forbidden")
+    }
+    next()
+}
+
+catch(err){
+    return res.status(500).send("DB error"),
+    console.error(err)
+}
+
+}
 
 pool.query ("SELECT NOW()", function(err, result){
     if (err){
@@ -52,7 +91,7 @@ app.get("/products", async function(req, res){
 
 
 
-app.post("/orders", async function(req, res){
+app.post("/orders", authMiddleware ,async function(req, res){
 
     let cart = req.body.cart
     let total = 0
@@ -107,18 +146,21 @@ app.post("/orders", async function(req, res){
 })
 
 
-app.get("/admin", function(req, res){
+app.get("/admin", adminMiddleware ,function(req, res){
+
+    
+
     res.sendFile(__dirname + "/public/adminMain.html")
 })
 
-app.get("/adminOrders", async function(req, res){
+app.get("/adminOrders", adminMiddleware ,async function(req, res){
 
     let response = await pool.query('SELECT * FROM orders')
 
     res.json(response.rows)
 })
 
-app.delete("/adminOrders/:id", async function(req, res){
+app.delete("/adminOrders/:id", adminMiddleware, async function(req, res){
 
     let id = Number(req.params.id)
 
@@ -134,7 +176,7 @@ app.delete("/adminOrders/:id", async function(req, res){
 
 })
 
-app.get("/public/adminOrders/open/:id", function(req, res){
+app.get("/public/adminOrders/open/:id", adminMiddleware, function(req, res){
 
     
 
@@ -143,7 +185,7 @@ app.get("/public/adminOrders/open/:id", function(req, res){
 
 })
 
-app.get("/api/adminOrders/open/:id", async function(req, res){
+app.get("/api/adminOrders/open/:id", adminMiddleware, async function(req, res){
 
     let id = Number(req.params.id)
 
@@ -155,7 +197,7 @@ app.get("/api/adminOrders/open/:id", async function(req, res){
     
 })
 
-app.patch("/api/adminOrders/open/:id", async function(req, res){
+app.patch("/api/adminOrders/open/:id", adminMiddleware, async function(req, res){
     let id = Number(req.params.id)
     let status = req.body.status
 
@@ -168,7 +210,7 @@ app.patch("/api/adminOrders/open/:id", async function(req, res){
     
 })
 
-app.delete("/api/adminOrders/open/:id", async function(req, res){
+app.delete("/api/adminOrders/open/:id", adminMiddleware, async function(req, res){
     let id = Number(req.params.id)
 
     await pool.query(`DELETE FROM orders WHERE id = $1`,
@@ -177,7 +219,7 @@ app.delete("/api/adminOrders/open/:id", async function(req, res){
     res.json({message: "Order deleted"})
 })
 
-app.get("/admin/products", async function(req, res){
+app.get("/admin/products", adminMiddleware, async function(req, res){
 
     let products = await pool.query(`SELECT * FROM products ORDER BY id ASC`)
 
@@ -185,7 +227,7 @@ app.get("/admin/products", async function(req, res){
 
 })
 
-app.get("/admin/products/category", async function(req, res){
+app.get("/admin/products/category", adminMiddleware, async function(req, res){
 
     let categories = await pool.query(`SELECT DISTINCT category FROM products`)
 
@@ -193,7 +235,7 @@ app.get("/admin/products/category", async function(req, res){
 
 })
 
-app.delete("/admin/products/:id", async function(req, res){
+app.delete("/admin/products/:id", adminMiddleware, async function(req, res){
     let id = Number(req.params.id)
     
     await pool.query(`DELETE FROM products WHERE id = $1`,
@@ -204,7 +246,7 @@ app.delete("/admin/products/:id", async function(req, res){
 })
 
 
-app.patch("/admin/products/:id", async function(req, res){
+app.patch("/admin/products/:id", adminMiddleware, async function(req, res){
     let id = Number(req.params.id)
 
     let name = req.body.name
@@ -221,13 +263,13 @@ app.patch("/admin/products/:id", async function(req, res){
 
 })
 
-app.get("/admin/products/create", function(req, res){
+app.get("/admin/products/create", adminMiddleware, function(req, res){
 
     res.sendFile(__dirname + "/public/adminCreateProd.html")
 })
 
 
-app.post("/create", async function(req, res){
+app.post("/create", adminMiddleware, async function(req, res){
 
     let name = req.body.name
     let price = Number(req.body.price)
@@ -275,7 +317,7 @@ try{
     res.redirect("/logIn")
 }
 catch (err){
-    if (err.code = 23505){
+    if (err.code == 23505){
     return res.status(409).send("This email already exists, try logging in")
 }
 return res.status(500).send("Server error")
@@ -296,13 +338,17 @@ app.post("/loggingIn", async function(req, res){
         [email]
     )
 
-    let user = result.rows[0]
+    
 
     if(result.rows.length === 0){
         return res.status(404).send("This email does not exist, try signing up")
     }
+    
+    let user = result.rows[0]
 
     let compare = await bcrypt.compare(password, result.rows[0].password_hash)
+    
+    
 
     if (compare === false){
         return res.status(401).send("Wrong password")
@@ -313,6 +359,23 @@ app.post("/loggingIn", async function(req, res){
     res.redirect("/")
 
 })
+
+app.post("/logOut", authMiddleware, function(req, res){
+
+    req.session.destroy(function(err){
+        if(err){
+            return res.status(500).send("Logout error")
+
+        }
+
+        res.clearCookie("connect.sid")
+        return res.redirect("/")
+    })
+})
+
+
+
+
 
 app.listen(3000, function(){
     console.log("http://localhost:3000")
