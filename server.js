@@ -62,7 +62,44 @@ catch(err){
     console.error(err)
 }
 
+
 }
+
+
+async function accountStatus(req, res, next){
+
+    try{
+        let result = await pool.query(`SELECT status FROM users WHERE id = $1`,
+            [req.session.userId]
+        )
+
+        if(result.rowCount == 0){
+            res.redirect("/logIn")
+        }
+
+        if (result.rows[0].status !== "active"){
+            req.session.destroy(function(err){
+                if (err) {
+                    console.error(err)
+                    return res.status(500).send("Session error")
+
+                }
+                return res.redirect("/logIn")
+            })
+            return
+        }
+        next()
+    }
+    catch(err){
+        console.error(err)
+        return res.status(500).send("DB error")
+    }
+
+
+}
+
+
+
 
 pool.query ("SELECT NOW()", function(err, result){
     if (err){
@@ -91,7 +128,7 @@ app.get("/products", async function(req, res){
 
 
 
-app.post("/orders", authMiddleware ,async function(req, res){
+app.post("/orders", authMiddleware, accountStatus ,async function(req, res){
 
     let cart = req.body.cart
     let total = 0
@@ -355,6 +392,7 @@ app.post("/loggingIn", async function(req, res){
     }
 
     req.session.userId = user.id
+    
 
     res.redirect("/")
 
@@ -374,8 +412,67 @@ app.post("/logOut", authMiddleware, function(req, res){
 })
 
 
+app.get("/users", adminMiddleware, async function(req, res){
+
+    let users = await pool.query(`SELECT * FROM users`)
+
+    res.json(users.rows)
+
+})
+
+app.patch("/users/deactivate/:id", adminMiddleware, async function(req, res){
+
+    let id = req.params.id
+
+    if (id < 0){
+        return res.status(404).send("User not found")
+    }
+
+try{
+    let result = await pool.query(`UPDATE users SET status = $1 WHERE id = $2`,
+        ["deactivated", id]
+    )
+
+    if (result.rowCount === 0) {
+            return res.status(404).json({ message: "User not found" })}
+
+    res.json({message: "account deactivated"})
+
+} 
+
+catch(err){
+    console.error(err)
+    return res.status(500).send("DB error")
+}
 
 
+})
+
+app.patch("/users/activate/:id", adminMiddleware, async function (req, res){
+
+    let id = Number(req.params.id)
+
+    if (id < 0){
+        return res.status(404).send("User not found")
+    }
+
+    try{
+        let result = await pool.query(`UPDATE users SET status = $1 WHERE id = $2`,
+            ["active", id]
+        )
+
+        if (result.rowCount == 0){
+            return res.status(404).send("User not found")
+        }
+
+        res.json({message: "Account activated"})
+    }
+    catch(err){
+        console.error(err)
+        return res.status(500).send("DB error")
+
+    }
+})
 
 app.listen(3000, function(){
     console.log("http://localhost:3000")
