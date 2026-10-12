@@ -9,16 +9,19 @@ let order = fetch("/adminOrders")
         let orderCard = document.createElement("div")
         orderCard.classList.add("orderCart")
         
+        let userId = document.createElement("p")
+        userId.textContent = "User ID: " + orderSect.user_id
 
         let orderId = document.createElement("P")
-        orderId.textContent = orderSect.id
+        orderId.textContent = "Order ID: " + orderSect.id
 
         let status = document.createElement("p")
-        status.textContent = orderSect.status
+        status.textContent = "Status: " + orderSect.status
 
         let orderTotal = document.createElement("p")
-        orderTotal.textContent = orderSect.total
+        orderTotal.textContent = "Total: $" + orderSect.total
 
+        orderCard.appendChild(userId)
         orderCard.appendChild(orderId)
         orderCard.appendChild(status)
         orderCard.appendChild(orderTotal)

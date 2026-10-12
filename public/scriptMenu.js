@@ -196,11 +196,8 @@ placeOrderBut.addEventListener("click", function(){
         body: JSON.stringify({
             cart: cart
         })
-    }
-
-
-
-    )
+    })
+   
 })
 
 loadCart()

@@ -74,7 +74,7 @@ async function accountStatus(req, res, next){
         )
 
         if(result.rowCount == 0){
-            res.redirect("/logIn")
+           return res.redirect("/logIn")
         }
 
         if (result.rows[0].status !== "active"){
@@ -84,7 +84,7 @@ async function accountStatus(req, res, next){
                     return res.status(500).send("Session error")
 
                 }
-                return res.redirect("/logIn")
+                return res.status(403).send("Account deactivated, dumbahh")
             })
             return
         }
@@ -100,7 +100,6 @@ async function accountStatus(req, res, next){
 
 
 
-
 pool.query ("SELECT NOW()", function(err, result){
     if (err){
         console.log(err)
@@ -110,11 +109,28 @@ pool.query ("SELECT NOW()", function(err, result){
     console.log(result.rows)
 })
 
-app.get("/", function(req, res){
-    res.sendFile(__dirname + "/public/index.html")
+app.get("/", function(req, res) {
+    let user = req.session.userId
+
+    if (!user) {
+        return res.sendFile(__dirname + "/public/index.html")
+    }
+
+    return res.sendFile(__dirname + "/public/indexLoggedIn.html")
 })
 
-app.get("/menu", function(req, res){
+app.get("/greet", authMiddleware, async function(req, res){
+
+    let id = req.session.userId
+
+    let result = await pool.query(`SELECT * FROM users WHERE id = $1`,
+        [id]
+    )
+
+    res.json(result.rows)
+
+})
+app.get("/menu", accountStatus, function(req, res){
     res.sendFile(__dirname + "/public/menu.html")
 })
 
@@ -158,7 +174,7 @@ app.post("/orders", authMiddleware, accountStatus ,async function(req, res){
             `INSERT INTO orders (user_id, status, total)
             VALUES ($1, $2, $3)
             RETURNING id`,
-            [ null, "pending", total]) 
+            [ req.session.userId, "pending", total]) 
             
             let orderId = ordersResult.rows[0].id
             console.log(orderId)
