@@ -490,6 +490,57 @@ app.patch("/users/activate/:id", adminMiddleware, async function (req, res){
     }
 })
 
+
+    
+app.get("/my", authMiddleware, function(req, res){
+
+    res.sendFile(__dirname + "/public/my.html")
+
+})
+
+
+app.get("/myOrders", authMiddleware, async function(req, res){
+    let id = req.session.userId
+
+    try{
+        result = await pool.query(`SELECT * FROM orders WHERE user_id = $1`,
+            [id]
+        )
+        if (result.rowCount === 0){
+            return res.status(404).send("No orders created")
+        }
+        
+        res.json(result.rows)
+    }
+    catch(err){
+        console.error(err)
+        return res.status(500).send("DB error")
+    }
+})
+
+app.get("/myOrders/:id", authMiddleware, async function(req, res) {
+    
+    let id = req.params.id
+
+    try{
+        let result = await pool.query(`SELECT products.name AS product, order_items.price AS price, order_items.quantity AS quantity FROM products JOIN order_items ON products.id = order_items.product_id WHERE order_items.order_id = $1`,
+            [id]
+        )
+
+        if(result.rows <= 0){
+            return res.status(404).send("No orders found")
+        }
+
+        res.json(result.rows)
+    }
+    catch(err){
+        console.error(err)
+        return res.status(500).send("DB error")
+    }
+
+    
+})
+
 app.listen(3000, function(){
     console.log("http://localhost:3000")
 });
