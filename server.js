@@ -541,6 +541,51 @@ app.get("/myOrders/:id", authMiddleware, async function(req, res) {
     
 })
 
+app.get("/myProfile", authMiddleware, async function(req, res){
+
+    let id = req.session.userId
+
+try{
+
+    let result = await pool.query(`SELECT * FROM users WHERE id = $1`,
+        [id]
+    )
+    if (result.rows < 0){
+        return res.status(404).send("User not found")
+    }
+
+    res.json(result.rows)
+}
+
+catch(err){
+    console.error(err)
+    return res.status(500).send("DB error")
+}
+
+})
+
+app.patch("/myProfile/change", authMiddleware, async function(req, res){
+
+    let id = req.session.userId
+    let newPassword = req.body.password
+
+    let newPassword_hash = await bcrypt.hash(newPassword, 10)
+try{
+    await pool.query(`UPDATE users SET password_hash = $1 WHERE id = $2`,
+        [newPassword_hash, id]
+    )
+
+    res.json({message: "Password changed"})
+}
+
+catch(err){
+    console.error(err)
+    return res.status(500).send("DB error")
+
+}
+
+})
+
 app.listen(3000, function(){
     console.log("http://localhost:3000")
 });
