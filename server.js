@@ -1,3 +1,4 @@
+require("dotenv").config()
 const express = require("express");
 const { Pool } = require("pg");
 const bcrypt = require("bcrypt")
@@ -7,16 +8,16 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(express.static(__dirname))
 const pool = new Pool ({
-    user: "postgres",
-    host: "localhost",
-    database: "foodHub",
-    password: "1488",
-    port: 5432
+    user: process.env.DB_USER,
+    host: process.env.DB_HOST,
+    database: process.env.DB_NAME,
+    password: process.env.DB_PASSWORD,
+    port: process.env.DB_PORT
 
 })
 
 app.use(session({
-    secret: "some-long-random-secret-for-development",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
@@ -586,7 +587,7 @@ catch(err){
 
 })
 
-app.listen(3000, function(){
+app.listen(process.env.PORT || 3000, function(){
     console.log("http://localhost:3000")
 });
 
