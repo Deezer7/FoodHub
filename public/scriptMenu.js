@@ -188,15 +188,58 @@ function calcTotal() {
 let placeOrderBut = document.querySelector(".placeOrder")
 
 placeOrderBut.addEventListener("click", function(){
-    fetch("/orders", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            cart: cart
+
+    if(cart.length < 1){
+        return
+    }
+
+    let confirmWindow = document.createElement("div")
+    cartCont.appendChild(confirmWindow)
+    let text = document.createElement("p")
+    text.textContent = "Place order?"
+    confirmWindow.appendChild(text)
+
+    let confirmBut = document.createElement("button")
+    confirmBut.textContent = "Place order"
+    confirmWindow.appendChild(confirmBut)
+
+    let rejectButton = document.createElement("button")
+    rejectButton.textContent = "Cancel"
+    confirmWindow.appendChild(rejectButton)
+
+    confirmBut.addEventListener("click", function(){
+
+         fetch("/orders", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+             body: JSON.stringify({
+                cart: cart
+            })
         })
+        .then(function(){
+
+            cart.length = 0
+            saveCart()
+
+
+        })
+        .then(function(){
+            location.reload()
+        })
+        
     })
+
+    rejectButton.addEventListener("click", function(){
+
+        confirmWindow.remove()
+
+    })
+
+
+
+    
    
 })
 
