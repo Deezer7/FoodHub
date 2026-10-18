@@ -35,15 +35,39 @@ fetch("/myProfile", {
         
         changeBut.remove()
 
+        let oldPasswordInp = document.createElement("input")
+        oldPasswordInp.placeholder = "Old password"
+        password.appendChild(oldPasswordInp)
+
         
+
         let passwordInput = document.createElement("input")
         passwordInput.placeholder = "New password"
         password.appendChild(passwordInput)
         password.appendChild(saveBut)
+        let error = document.createElement("p")
+        error.style.color = "red"
+        
+
+        let cancelBut = document.createElement("button")
+        cancelBut.textContent = "Cancel"
+        password.appendChild(cancelBut)
+
+        cancelBut.addEventListener("click", function(){
+
+            passwordInput.remove()
+            oldPasswordInp.remove()
+            saveBut.remove()
+            password.appendChild(changeBut)
+            cancelBut.remove()
+
+        })
 
         saveBut.addEventListener("click", function(){
-
+            
+            
             let newPassword = passwordInput.value
+            let oldPassword = oldPasswordInp.value
 
             
             fetch("/myProfile/change",{
@@ -52,12 +76,53 @@ fetch("/myProfile", {
                 headers: {"Content-Type": "application/json"},
 
                 body: JSON.stringify({
-                    password: newPassword
+                    password: newPassword,
+                    oldPassword: oldPassword
                 })
             })
-            .then(function(){
-                location.reload()
+            .then(function(res){
+                if(res.status === 401){
+                    password.appendChild(error)
+                    error.textContent = "incorrect old password"
+                    
+                    setTimeout(function(){
+
+                        error.remove()
+
+                    },3000)
+                    
+                    return
+                }
+                if(res.status === 400){
+                    password.appendChild(error)
+                    error.textContent = "Complete all required fields"
+
+                    setTimeout(function(){
+
+                        error.remove()
+
+                    },3000)
+
+                    return
+                }
+                password.appendChild(error)
+                cancelBut.remove()
+                passwordInput.remove()
+                oldPasswordInp.remove()
+                saveBut.remove()
+                error.textContent = "Password changed succesfully"
+                error.style.color = "green"
+                password.appendChild(changeBut)
+                
+
+
+                setTimeout(function(){
+                    error.remove()
+                    
+                },3000)
             })
+            
+            
 
         })
     })

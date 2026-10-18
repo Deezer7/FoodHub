@@ -359,7 +359,7 @@ app.post("/register", async function(req, res){
     let password = req.body.password
 
     if (!name || !email || !password){
-        res.status(400).send("Complete all fields")
+        return res.status(400).send("Complete all fields")
     }
 
     let hashed = await bcrypt.hash(password, 10)
@@ -493,14 +493,14 @@ app.patch("/users/activate/:id", adminMiddleware, async function (req, res){
 
 
     
-app.get("/my", authMiddleware, function(req, res){
+app.get("/my", accountStatus, authMiddleware, function(req, res){
 
     res.sendFile(__dirname + "/public/my.html")
 
 })
 
 
-app.get("/myOrders", authMiddleware, async function(req, res){
+app.get("/myOrders", accountStatus, authMiddleware, async function(req, res){
     let id = req.session.userId
 
     try{
@@ -519,13 +519,14 @@ app.get("/myOrders", authMiddleware, async function(req, res){
     }
 })
 
-app.get("/myOrders/:id", authMiddleware, async function(req, res) {
+app.get("/myOrders/:id", accountStatus, authMiddleware, async function(req, res) {
     
     let id = req.params.id
+    let uid = req.session.userId
 
     try{
-        let result = await pool.query(`SELECT products.name AS product, order_items.price AS price, order_items.quantity AS quantity FROM products JOIN order_items ON products.id = order_items.product_id WHERE order_items.order_id = $1`,
-            [id]
+        let result = await pool.query(`SELECT products.name AS product, order_items.price AS price, order_items.quantity AS quantity FROM products JOIN order_items ON products.id = order_items.product_id JOIN orders ON orders.id = order_items.order_id WHERE order_items.order_id = $1 AND orders.user_id = $2`,
+            [id, uid]
         )
 
         if(result.rows <= 0){
@@ -542,7 +543,7 @@ app.get("/myOrders/:id", authMiddleware, async function(req, res) {
     
 })
 
-app.get("/myProfile", authMiddleware, async function(req, res){
+app.get("/myProfile", accountStatus, authMiddleware, async function(req, res){
 
     let id = req.session.userId
 
@@ -565,13 +566,34 @@ catch(err){
 
 })
 
-app.patch("/myProfile/change", authMiddleware, async function(req, res){
+app.patch("/myProfile/change", accountStatus, authMiddleware, async function(req, res){
 
     let id = req.session.userId
     let newPassword = req.body.password
+    let oldPassword = req.body.oldPassword
+
+    if (!oldPassword || !newPassword) {
+    return res.status(400).send("Both passwords are required")
+}
+
+try{
+    let result = await pool.query(`SELECT password_hash FROM users WHERE id = $1`,
+        [id]
+    )
+
+    if (result.rows.length === 0) {
+            return res.status(404).send("User not found")}
+
+    let password_hash = result.rows[0].password_hash
+
+    let compare = await bcrypt.compare(oldPassword, password_hash)
+
+    if(compare === false){
+        return res.status(401).send("Incorrect old password")
+    }
 
     let newPassword_hash = await bcrypt.hash(newPassword, 10)
-try{
+
     await pool.query(`UPDATE users SET password_hash = $1 WHERE id = $2`,
         [newPassword_hash, id]
     )
