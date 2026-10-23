@@ -218,7 +218,7 @@ placeOrderBut.addEventListener("click", function(){
                 cart: cart
             })
         })
-        .then(function(){
+        .then(function(res){
 
             cart.length = 0
             saveCart()

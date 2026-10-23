@@ -150,6 +150,28 @@ app.post("/orders", authMiddleware, accountStatus ,async function(req, res){
 
     let cart = req.body.cart
     let total = 0
+    
+    
+    if (!Array.isArray(cart) || cart.length === 0){
+        return res.status(400).send("Incorrect cart")
+    }
+
+    for (let item of cart){
+        if (
+            !item ||
+            !Number.isInteger(item.quantity) ||
+            !Number.isInteger(item.id) ||
+            item.quantity <= 0 ||
+            item.id <= 0 
+        ){
+            return res.status(400).send("Invalid quantity or product ID")
+        }
+
+    }
+
+
+    let products = []
+
     const client = await pool.connect()
 
     try{
@@ -160,19 +182,36 @@ app.post("/orders", authMiddleware, accountStatus ,async function(req, res){
         let id = item.id
         let quantity = item.quantity
 
+        
         let result = await client.query(
-            "SELECT id, price FROM products WHERE id = $1",
+            "SELECT id, price FROM products WHERE id = $1 AND available = true",
             [id]
         )
+
+        if(result.rows.length === 0){
+            let err = new Error("Product not found")
+            err.statusCode = 404
+            throw err
+        }
+
+
 
         let price = result.rows[0].price
         
         let subtotal = price * quantity
 
-        total = total + subtotal    
+        total = total + subtotal
+
+        products.push({
+            id: id,
+            quantity: quantity,
+            price: price
+        })
+        
+        console.log(total)
        
-       
-    }
+       }
+    
         let ordersResult = await client.query(
             `INSERT INTO orders (user_id, status, total)
             VALUES ($1, $2, $3)
@@ -182,36 +221,39 @@ app.post("/orders", authMiddleware, accountStatus ,async function(req, res){
             let orderId = ordersResult.rows[0].id
             console.log(orderId)
 
-            for(let item of cart){
-                let id = item.id
-                let quantity = item.quantity
+            
+        for(let item of products) {   
+            await client.query(`INSERT INTO order_items (order_id, product_id, quantity, price)
+            VALUES($1, $2, $3, $4)`,
+            [orderId, item.id, item.quantity, item.price ]
+            )}
                 
-                let result = await client.query(
-                    "SELECT id, price FROM products WHERE id = $1",
-                    [id]
-                )
-
-                    let price = result.rows[0].price
-
-                    await client.query(`INSERT INTO order_items (order_id, product_id, quantity, price)
-                        VALUES($1, $2, $3, $4)`,
-                        [orderId, id, quantity, price ]
-                    )
-                
-            }
+        
             
             await client.query("COMMIT")
-            res.json({ orderId: orderId })
+            return res.json({ orderId: orderId })
+        
         }
+    
         catch(err){
+        try{   
             await client.query("ROLLBACK")
-            console.error(err)
-            res.status(500).json({ error: "Failed to create order" })
+            
+            } 
+            catch(rollbackErr){
+                console.error("Rollback error: ", rollbackErr)
+            }
+
+            if(!res.headersSent){
+            res.status(err.statusCode || 500).json({
+            error: err.message || "Failed to create order"
+            })}
         }
         finally{
             client.release()
         }
 })
+
 
 
 app.get("/admin", adminMiddleware ,function(req, res){
