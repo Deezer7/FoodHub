@@ -1,6 +1,7 @@
 require("dotenv").config()
 const express = require("express");
 const { Pool } = require("pg");
+
 const bcrypt = require("bcrypt")
 const app = express();
 const session = require("express-session")
@@ -149,12 +150,17 @@ app.post("/orders", authMiddleware, accountStatus ,async function(req, res){
 
     let cart = req.body.cart
     let total = 0
+    const client = await pool.connect()
 
+    try{
+
+    await client.query("BEGIN")
+    
     for(let item of cart){
         let id = item.id
         let quantity = item.quantity
 
-        let result = await pool.query(
+        let result = await client.query(
             "SELECT id, price FROM products WHERE id = $1",
             [id]
         )
@@ -163,15 +169,11 @@ app.post("/orders", authMiddleware, accountStatus ,async function(req, res){
         
         let subtotal = price * quantity
 
-        total = total + subtotal
-
-        
-
-        
-
-        
+        total = total + subtotal    
+       
+       
     }
-        let ordersResult = await pool.query(
+        let ordersResult = await client.query(
             `INSERT INTO orders (user_id, status, total)
             VALUES ($1, $2, $3)
             RETURNING id`,
@@ -184,19 +186,31 @@ app.post("/orders", authMiddleware, accountStatus ,async function(req, res){
                 let id = item.id
                 let quantity = item.quantity
                 
-                let result = await pool.query(
+                let result = await client.query(
                     "SELECT id, price FROM products WHERE id = $1",
                     [id]
                 )
 
                     let price = result.rows[0].price
 
-                    await pool.query(`INSERT INTO order_items (order_id, product_id, quantity, price)
+                    await client.query(`INSERT INTO order_items (order_id, product_id, quantity, price)
                         VALUES($1, $2, $3, $4)`,
                         [orderId, id, quantity, price ]
                     )
+                
             }
+            
+            await client.query("COMMIT")
             res.json({ orderId: orderId })
+        }
+        catch(err){
+            await client.query("ROLLBACK")
+            console.error(err)
+            res.status(500).json({ error: "Failed to create order" })
+        }
+        finally{
+            client.release()
+        }
 })
 
 
