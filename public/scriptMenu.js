@@ -189,9 +189,7 @@ let placeOrderBut = document.querySelector(".placeOrder")
 
 placeOrderBut.addEventListener("click", function(){
 
-    if(cart.length < 1){
-        return
-    }
+   
 
     let confirmWindow = document.createElement("div")
     cartCont.appendChild(confirmWindow)
@@ -220,14 +218,24 @@ placeOrderBut.addEventListener("click", function(){
         })
         .then(function(res){
 
+            if(res.status === 400){
+
+                let error = document.createElement("p")
+                error.textContent = "Please add something to your cart before placing order"
+                cartCont.appendChild(error)
+
+                setTimeout(function(){
+                    error.remove()
+                }, 3000)
+
+            }
+
             cart.length = 0
             saveCart()
 
 
         })
-        .then(function(){
-            location.reload()
-        })
+        
         
     })
 
