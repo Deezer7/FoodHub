@@ -1,6 +1,6 @@
 body {
     background-image: url(/foto/hero.avif);
-    background-size: cover;
+    background-size: 100%;
     background-repeat: no-repeat;
     font-family: "Asap sharp", sans-serif;
     background-color: rgb(23, 23, 24);
@@ -78,13 +78,151 @@ h1, h2{
 button{
     font-family: "Asap sharp", sans-serif;
     font-size: 24px;
+    cursor: pointer;
 }
 
 @media(max-width:740px){
 
     body{
         background-image: url(/foto/heroMobile.avif);
+        background-size:670px;
+        background-repeat: no-repeat;
+        font-family: "Asap sharp", sans-serif;
+        background-color: rgb(23, 23, 24);
     }
 
+    .FoodHub{
+    font-size: 54px;
+    color: orangered;
+    }
+    
+    .slogan{
+    font-size: 34px;
+    color: orangered;
+    
+}
+
+.main{
+    
+    margin-bottom: 0px;
+    margin-top: 30px;
+    margin-left: 30px;
+}
+
+.welcome{
+    margin-left: 50px;
+    
+}
+
+.innerWelcome{
+    font-size: 34px;
+    color:burlywood;
+}
+.toEnjoy{
+    font-size: 30px;
+    color:burlywood;
+}
+
+.log{
+    width: 120px;
+    height: 70px;
+    background-color:darkslategrey;
+    color: white;
+    transition: all .3s ease;
+    border-radius: 15px;
+    border: none;
+    margin-right: 30px;
+}
+
+.sign{
+    width: 120px;
+    height: 70px;
+    background-color:darkslategrey;
+    color: white;
+    transition: all .3s ease;
+    border-radius: 15px;
+    border: none;
+    
+}
+
+.buttons{
+    margin-left: 50px;
+    
+}
 
 }
+
+@media(min-width:700px) and (max-width:940px){
+
+        body{
+        background-image: url(/foto/heroMobile.avif);
+        background-size:970px;
+        background-repeat: no-repeat;
+        font-family: "Asap sharp", sans-serif;
+        background-color: rgb(23, 23, 24);
+    }
+
+    .FoodHub{
+    font-size: 54px;
+    color: orangered;
+    }
+    
+    .slogan{
+    font-size: 34px;
+    color: orangered;
+    
+}
+
+.main{
+    
+    margin-bottom: 120px;
+    margin-top: 70px;
+    margin-left: 30px;
+}
+
+.welcome{
+    margin-left: 50px;
+    
+}
+
+.innerWelcome{
+    font-size: 34px;
+    color:burlywood;
+}
+.toEnjoy{
+    font-size: 30px;
+    color:burlywood;
+}
+
+.log{
+    width: 120px;
+    height: 70px;
+    background-color:darkslategrey;
+    color: white;
+    transition: all .3s ease;
+    border-radius: 15px;
+    border: none;
+    margin-right: 30px;
+}
+
+.sign{
+    width: 120px;
+    height: 70px;
+    background-color:darkslategrey;
+    color: white;
+    transition: all .3s ease;
+    border-radius: 15px;
+    border: none;
+    
+}
+
+.buttons{
+    margin-left: 50px;
+    
+}
+
+}
+
+
+
+
