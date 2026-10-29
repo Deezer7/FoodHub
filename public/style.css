@@ -1,9 +1,65 @@
 body {
-    background-image: url(/foto/hero.avif);
+    background-image: url(/foto/hero-1.avif);
     background-size: 100%;
     background-repeat: no-repeat;
     font-family: "Asap sharp", sans-serif;
-    background-color: rgb(23, 23, 24);
+    background-color: #171A1C;
+    margin: 0px;
+    
+    
+}
+
+a{
+    text-decoration: none;
+    color: white;
+    font-size: 22px;
+    transition: all .3s ease;
+
+}
+
+a:hover{
+    color: orangered;
+    transform: scale(1.1);
+}
+
+header{
+    margin-top: 40px;
+    
+    
+}
+
+header img{
+
+    
+    margin-left: 90px;
+    position: absolute;
+    border-radius: 5px;
+    box-shadow: 0px 3px 3px orangered;
+    margin-bottom: 10px;
+
+    
+
+
+}
+
+.hat{
+    display: flex;
+    align-items: center;
+    width:91%;
+    margin: 0 auto;
+    background-color: #171a1c9c;
+    height:90px;
+    border-radius: 15px;
+    
+    
+}
+.links{
+    display: flex;
+    margin: 0 auto;
+    display: flex;
+    gap: 30px;
+    margin-right: 90px;
+    
 }
 
 h1, h2{
@@ -23,8 +79,8 @@ h1, h2{
 
 .main{
     margin-left: 70px;
-    margin-bottom: 120px;
-    margin-top: 70px;
+    margin-bottom: 40px;
+    margin-top: 100px;
 }
 
 .innerWelcome{
@@ -43,7 +99,7 @@ h1, h2{
 .log{
     width: 160px;
     height: 80px;
-    background-color:darkslategrey;
+    background-color:#171A1C;
     color: white;
     transition: all .3s ease;
     border-radius: 15px;
@@ -59,7 +115,7 @@ h1, h2{
 .sign{
     width: 160px;
     height: 80px;
-    background-color:darkslategrey;
+    background-color:#171A1C;
     color: white;
     transition: all .3s ease;
     border-radius: 15px;
@@ -81,6 +137,105 @@ button{
     cursor: pointer;
 }
 
+
+.footer {
+    background-color: #171a1c;
+    color: #f1f1f1;
+    padding: 40px 7% 20px;
+    margin-top: 420px;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+    flex-wrap: wrap;
+    padding-bottom: 30px;
+}
+
+.footer-brand img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+}
+
+.footer-brand p {
+    color: #b8b8b8;
+    font-size: 14px;
+    margin: 8px 0;
+}
+
+.footer-links {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.footer-links h3 {
+    color: #ff4b1f;
+    font-size: 17px;
+    margin: 0 0 5px;
+}
+
+.footer-links a {
+    color: #c5c5c5;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+    color: #ff4b1f;
+}
+
+.footer-bottom {
+    border-top: 1px solid #383838;
+    padding-top: 20px;
+    text-align: center;
+}
+
+.footer-bottom p {
+    color: #888;
+    font-size: 13px;
+    margin: 0;
+}
+
+
+.menu button{
+    width: 260px;
+    height: 120px;
+    background-color:#171A1C;
+    color: white;
+    transition: all .3s ease;
+    border-radius: 15px;
+    border: none;
+    margin-left: 20px;
+}
+
+.menu button:hover{
+    transform: scale(1.1);
+    color: black;
+    background-color: orangered;
+    font-size: 28px; 
+}
+
+.greetings {
+    font-size: 34px;
+    color:burlywood;
+    margin-left: 20px;
+}
+
+@media (max-width: 600px) {
+    .footer-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px 20px;
+    }
+
+    .footer-brand {
+        grid-column: 1 / -1;
+    }
+}
 @media(max-width:740px){
 
     body{
@@ -90,6 +245,62 @@ button{
         font-family: "Asap sharp", sans-serif;
         background-color: rgb(23, 23, 24);
     }
+
+    header{
+    margin-top: 0px;
+    
+    
+}
+
+    .hat{
+    display: flex;
+    align-items: center;
+    width:90%;
+    margin: 0 auto;
+    background-color: #171a1cb7;
+    height:70px;
+    border-radius: 15px;
+    padding: 10px;
+    padding-left: 25px;
+    padding-right: 25px;
+    
+}
+
+.links{
+    display: flex;
+    gap: 0px   ;
+    margin: 0 auto;
+    display: flex;
+    margin-left: 30px;
+}
+
+.hat a{
+
+text-decoration: none;
+    color: white;
+    font-size: 15px;
+    transition: all .3s ease;
+    margin-left: 40px;
+
+}
+
+
+
+header img{
+
+    width: 50px;
+    height: 50px;
+    margin-top: 0px;
+    margin-left: 0px;
+    
+    border-radius: 5px;
+    box-shadow: 0px 3px 3px orangered;
+    
+    
+    
+
+
+}
 
     .FoodHub{
     font-size: 54px;

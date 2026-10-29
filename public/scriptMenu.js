@@ -230,8 +230,12 @@ placeOrderBut.addEventListener("click", function(){
 
             }
 
+            if(res.ok){
+
             cart.length = 0
             saveCart()
+            location.reload()
+            }
 
 
         })

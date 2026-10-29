@@ -4,19 +4,66 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FoodHub</title>
+    <link rel="stylesheet" href="/public/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Asap+Sharp:ital,wght@0,100..900;1,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
   </head>
   <body>
     
-    <form action="/logOut" method="post"><button type="submit">Log out</button></form>
-    <a href="/my"><button>Profile and Orders</button></a>
-    <h1>FoodHub</h1>
-    <p>Fast. Reliable. Delicious</p>
+    
+    
+    <header>
+  <div class="hat">
+    <img src="/foto/logoFH.png" alt="logo" width="80px" height="80px" > <div class="links"><form action="/logOut" method="post"><button type="submit">Log out</button></form><a href="/my">Profile</a><a href="/contact">Contact</a><a href="/help">Help</a></div>
+  </div>
+</header>
+
+  <div class="main">
+
+    <h1 class="FoodHub">FoodHub</h1>
+    <p class="slogan">Fast. Reliable. Delicious</p>
 
     <h2 class="greetings"></h2>
-
-    <a href="/menu"><button>Our menu</button></a>
     
-
+    <a href="/menu" class="menu"><button>Discover menu</button></a>
+    
+</div>
     <script src="public/scriptMain.js"></script>
   </body>
+  <footer class="footer">
+    <div class="footer-content">
+
+        <div class="footer-brand">
+            <img src="/foto/logoFH.png" alt="FoodHub logo">
+            <p>Fast. Reliable. Delicious.</p>
+            <p>Your favorite food, delivered to your door.</p>
+        </div>
+
+        <div class="footer-links">
+            <h3>Quick Links</h3>
+            <a href="/">Home</a>
+            <a href="/products">Menu</a>
+            <a href="/myOrders">My Orders</a>
+        </div>
+
+        <div class="footer-links">
+            <h3>Support</h3>
+            <a href="/contact">Contact</a>
+            <a href="/help">Help</a>
+        </div>
+
+        <div class="footer-links">
+            <h3>Account</h3>
+              <form action="/logOut" method="post"><button type="submit">Log out</button></form>
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        <p>&copy; 2026 FoodHub. All rights reserved.</p>
+    </div>
+</footer>
+
 </html>
