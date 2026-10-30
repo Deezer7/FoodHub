@@ -135,6 +135,7 @@ button{
     font-family: "Asap sharp", sans-serif;
     font-size: 24px;
     cursor: pointer;
+    
 }
 
 
@@ -181,7 +182,7 @@ button{
     color: #c5c5c5;
     text-decoration: none;
     font-size: 14px;
-    transition: color 0.2s ease;
+    transition: all 0.3s ease;
 }
 
 .footer-links a:hover {
@@ -219,11 +220,124 @@ button{
     font-size: 28px; 
 }
 
+.logOut{
+    background: none;
+    border: none;
+    color: white;
+    transition: all .3s ease;
+}
+.logOut:hover{
+    transform: scale(1.1);
+    color: black;
+    color: orangered;
+}
+
+.logOutD{
+    background: none;
+    border: none;
+    color: #c5c5c5;
+    font-size: 17px;
+    transition: all .3s ease;
+}
+.logOutD:hover{
+    transform: scale(1.1);
+    color: black;
+    color: orangered;
+}
+
 .greetings {
     font-size: 34px;
     color:burlywood;
     margin-left: 20px;
 }
+
+.mainBlock{
+    background-color: #171a1cc9;
+    width: 70%;
+    height: 700px;
+    margin: auto;
+    margin-top: 100px;
+    position: relative;
+    border-radius: 25px;
+}
+
+.goBack {
+    width: 160px;
+    height: 80px;
+    background-color:orangered;
+    color: white;
+    transition: all .3s ease;
+    border-radius: 15px;
+    border: none;
+    font-size: 18px;
+    margin-left: 20px;
+    margin-top: 20px;
+    position: absolute;
+}
+
+.goBack:hover{
+
+    width: 240px;
+    height: 100px;
+    color: black;
+
+}
+.mainBlockContain{
+    
+    padding-top: 40px;
+    width: 80%;
+    text-align: center;
+    margin: auto;
+}
+
+.logInMain{
+    padding-top: 50px;
+}
+
+.logInMain input{
+    width: 300px;
+    height: 70px;
+    border: none;
+    background-color: #383838;
+    margin-bottom: 30px;
+    border-radius: 15px;
+    color: white;
+    font-size: 20px;
+
+}
+
+.logInMain button{
+
+    width: 200px;
+    height: 80px;
+    background-color:orangered;
+    color: white;
+    transition: all .3s ease;
+    border-radius: 15px;
+    border: none;
+    transition: all .3s ease;
+    
+
+}
+
+.logInMain button:hover{
+
+    width: 240px;
+    height: 100px;
+    color: black;
+
+}
+
+.logInMain p, span, a {
+    color: white;
+    font-size: 24px;
+
+}
+
+.logInMain a{
+    text-decoration: underline;
+}
+
 
 @media (max-width: 600px) {
     .footer-content {
@@ -252,6 +366,43 @@ button{
     
 }
 
+.goBack {
+    width: 100px;
+    height: 50px;
+    background-color:orangered;
+    color: white;
+    transition: all .3s ease;
+    border-radius: 15px;
+    border: none;
+    font-size: 15px;
+    margin-left: 10px;
+    margin-top: 10px;
+    position: absolute;
+}
+
+.goBack:hover{
+
+    width: 140px;
+    height: 60px;
+    color: black;
+
+}
+
+.mainBlock{
+    background-color: #171a1cc9;
+    width: 90%;
+    height: 700px;
+    margin: auto;
+    margin-top: 100px;
+    position: relative;
+    border-radius: 25px;
+    padding-bottom: 20px;
+}
+
+
+
+
+
     .hat{
     display: flex;
     align-items: center;
@@ -264,6 +415,15 @@ button{
     padding-left: 25px;
     padding-right: 25px;
     
+}
+
+.logOut{
+    background: none;
+    border: none;
+    color: white;
+    transition: all .3s ease;
+    font-size: 15px ;
+    margin-left: 40px;
 }
 
 .links{

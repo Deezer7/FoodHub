@@ -3,25 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Asap+Sharp:ital,wght@0,100..900;1,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <title>Sign Up</title>
 </head>
 <body>
-    <main>
-        <h1>Sign Up</h1>
-        <form action="/register" method="post">
+    <main class="mainBlock">
+        <a href="/"><button class="goBack">Go to main page</button></a>
+        <div class="mainBlockContain">
+        <h1 class="innerWelcome" style="color: orangered; font-size: 46px;">Welcome to FoodHub!</h1>
+        <form action="/register" method="post" class="logInMain">
 
-            <input type="text" name="name" id="name" placeholder="Enter your name" required>
+            <input type="text" name="name" id="name" placeholder="Enter your name" required> <br>
             
-            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required> <br>
 
             
-            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required> <br>
 
-            <button type="submit">Sign Up</button>
+            <button type="submit">Sign Up</button> <br>
+
+            <span>Or <a href="logIn">log in</a></span><span> if you have an account already</span>
+
         </form>
 
-        <span>Or <a href="logIn">log in</a></span><span> if you have an account already</span>
-
+        
+        </div>
     </main>
+
+
 </body>
+  <footer class="footer">
+    <div class="footer-content">
+
+        <div class="footer-brand">
+            <img src="/foto/logoFH.png" alt="FoodHub logo">
+            <p>Fast. Reliable. Delicious.</p>
+            <p>Your favorite food, delivered to your door.</p>
+        </div>
+
+        <div class="footer-links">
+            <h3>Quick Links</h3>
+            <a href="/">Home</a>
+            <a href="/products">Menu</a>
+            <a href="/myOrders">My Orders</a>
+        </div>
+
+        <div class="footer-links">
+            <h3>Support</h3>
+            <a href="/contact">Contact</a>
+            <a href="/help">Help</a>
+        </div>
+
+        <div class="footer-links">
+            <h3>Account</h3>
+            <a href="/logIn">Log In</a>
+            <a href="/signUp">Sign Up</a>
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        <p>&copy; 2026 FoodHub. All rights reserved.</p>
+    </div>
+</footer>
+
 </html>
