@@ -4,11 +4,50 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FoodHub Menu</title>
+    <link rel="stylesheet" href="/public/menu.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Asap+Sharp:ital,wght@0,100..900;1,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
   </head>
   <body>
     
+<header>
+    <div class="hat">
+
+        <img src="/foto/logoFH.png" alt="FoodHub" class="logo">
+        <h1 style="color: #F4F0E9; margin-left: 10px">Food</h1><h1 style="color: orangered;">Hub </h1><h1 style="color: #F4F0E9;" class="slogan1">. Your favorite food, delivered to your door.</h1>
+
+        <nav class="links">
+
+            <a href="/" aria-label="Home" title="Home">
+                <img src="/foto/main.png" alt="">
+            </a>
+
+            <form action="/logOut" method="post">
+                <button type="submit" class="logOut" title="Log Out">
+                    <img src="/foto/logout.png" alt="">
+                </button>
+            </form>
+
+            <a href="/my" aria-label="Profile">
+                <img src="/foto/profile.png" alt="">
+            </a>
+
+            <a href="/contact" aria-label="Contact">
+                <img src="/foto/contact.png" alt="">
+            </a>
+
+            
+
+        </nav>
+
+    </div>
+</header>
+
+
     <div class="heading">
-        <a href="/"><button>Go to main page</button></a>
+        
         <h1>Menu</h1>
         <p>Discover our delicious food</p>
 </div>
@@ -23,6 +62,41 @@
       <p class="total">Total to pay: </p>
       <button class="placeOrder">Place order!</button>
     </div>
+
+      <footer class="footer">
+    <div class="footer-content">
+
+        <div class="footer-brand">
+            <img src="/foto/logoFH.png" alt="FoodHub logo">
+            <p>Fast. Reliable. Delicious.</p>
+            <p>Your favorite food, delivered to your door.</p>
+        </div>
+
+        <div class="footer-links">
+            <h3>Quick Links</h3>
+            <a href="/">Home</a>
+            <a href="/products">Menu</a>
+            <a href="/myOrders">My Orders</a>
+        </div>
+
+        <div class="footer-links">
+            <h3>Support</h3>
+            <a href="/contact">Contact</a>
+            <a href="/help">Help</a>
+        </div>
+
+        <div class="footer-links">
+            <h3>Account</h3>
+              <form action="/logOut" method="post"><button class="logOutD" type="submit">Log out</button></form>
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        <p>&copy; 2026 FoodHub. All rights reserved.</p>
+    </div>
+</footer>
+
 
     <script src="/public/scriptMenu.js"></script>
   </body>

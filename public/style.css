@@ -20,27 +20,32 @@ a{
 a:hover{
     color: orangered;
     transform: scale(1.1);
+    
+            
 }
 
 header{
     margin-top: 40px;
+
     
     
 }
 
-header img{
 
+
+.logo{
+    margin-left: 10px;
     
-    margin-left: 90px;
-    position: absolute;
     border-radius: 5px;
-    box-shadow: 0px 3px 3px orangered;
-    margin-bottom: 10px;
 
     
-
-
+    width: 60px;
+    height: 60px;
 }
+
+
+
+
 
 .hat{
     display: flex;
@@ -55,11 +60,33 @@ header img{
 }
 .links{
     display: flex;
-    margin: 0 auto;
-    display: flex;
+    align-items:center;
     gap: 30px;
-    margin-right: 90px;
+    margin-left: auto;
+    margin-right: 20px;
+    flex-wrap: wrap;
     
+}
+
+.links a,
+.links button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.links img{
+
+    width: 45px;
+    height: 45px;
+    object-fit: contain;
+    filter: brightness(0) invert(0.90);
+}
+
+.logOut {
+    background: none;
+    border: none;
+    cursor: pointer;
 }
 
 h1, h2{
@@ -262,8 +289,8 @@ button{
 }
 
 .goBack {
-    width: 160px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
     background-color:orangered;
     color: white;
     transition: all .3s ease;
@@ -277,8 +304,8 @@ button{
 
 .goBack:hover{
 
-    width: 240px;
-    height: 100px;
+    width: 70px;
+    height: 70px;
     color: black;
 
 }
@@ -350,7 +377,7 @@ button{
         grid-column: 1 / -1;
     }
 }
-@media(max-width:740px){
+@media(max-width:699px){
 
     body{
         background-image: url(/foto/heroMobile.avif);
@@ -393,6 +420,7 @@ button{
     width: 90%;
     height: 700px;
     margin: auto;
+    
     margin-top: 100px;
     position: relative;
     border-radius: 25px;
@@ -423,15 +451,32 @@ button{
     color: white;
     transition: all .3s ease;
     font-size: 15px ;
-    margin-left: 40px;
+    
 }
+
+.logo{
+    width: 60px;
+    height: 60px;
+    margin-right: 0px;
+}
+
 
 .links{
     display: flex;
-    gap: 0px   ;
-    margin: 0 auto;
-    display: flex;
-    margin-left: 30px;
+    gap: 15px    ;
+    
+    
+    
+    
+}
+
+.links img{
+    width: 30px;
+    height: 30px;
+}
+
+.hat a{
+    margin: 0;
 }
 
 .hat a{
@@ -440,21 +485,22 @@ text-decoration: none;
     color: white;
     font-size: 15px;
     transition: all .3s ease;
-    margin-left: 40px;
+    
 
 }
 
-
+.hat h1{
+    display: none;
+}
 
 header img{
 
-    width: 50px;
-    height: 50px;
-    margin-top: 0px;
-    margin-left: 0px;
+    width: 25px;
+    height: 25px;
+    
     
     border-radius: 5px;
-    box-shadow: 0px 3px 3px orangered;
+    
     
     
     
@@ -544,6 +590,10 @@ header img{
     
 }
 
+.slogan1{
+    display: none;
+}
+
 .main{
     
     margin-bottom: 120px;
@@ -592,8 +642,33 @@ header img{
     
 }
 
+.logInMain{
+    padding-top: 10px;
+ }
+
 }
 
+@media (min-width:940px) and (max-width:1400px){
 
+    .slogan1{
+        display: none;
+    }
+
+    .mainBlock{
+    background-color: #171a1cc9;
+    width: 90%;
+    height: 600px;
+    margin: auto;
+    margin-top: 60px;
+    position: relative;
+    border-radius: 25px;
+    padding-bottom: 20px;
+}
+
+ .logInMain{
+    padding-top: 10px;
+ }
+
+}
 
 

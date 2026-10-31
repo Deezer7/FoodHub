@@ -1,0 +1,252 @@
+body{
+    margin: 0;
+    background-color: 	#202426;
+    font-family: "Asap sharp", sans-serif;
+}
+
+a{
+    text-decoration: none;
+    color: white;
+    font-size: 22px;
+    transition: all .3s ease;
+
+}
+
+a:hover{
+    color: orangered;
+    transform: scale(1.1);
+    
+            
+}
+
+header{
+    margin-top: 40px;
+
+    
+    
+}
+
+
+
+.logo{
+    display: flex;
+    margin: 0;
+    margin-left: 10px;
+    width: 60px;
+    height: 60px;
+    border-radius: 5px;
+}
+
+
+
+.main{
+    position: absolute;
+    
+}
+
+.hat{
+    display: flex;
+    align-items: center;
+    width:91%;
+    margin: 0 auto;
+    background-color: #171a1c9c;
+    height:90px;
+    border-radius: 15px;
+    
+    
+}
+.links{
+    display: flex;
+    align-items:center;
+    gap: 30px;
+    margin-left: auto;
+    margin-right: 20px;
+    
+}
+
+.links a,
+.links button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.links img{
+
+    width: 45px;
+    height: 45px;
+    object-fit: contain;
+    filter: brightness(0) invert(0.90);
+}
+
+.logOut {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+h1, h2{
+    font-family: "Monserrat", sans-serif;
+}
+
+
+.footer {
+    background-color: #171a1c;
+    color: #f1f1f1;
+    padding: 40px 7% 20px;
+    margin-top: 100px ;
+    
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+    flex-wrap: wrap;
+    padding-bottom: 30px;
+}
+
+.footer-brand img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+}
+
+.footer-brand p {
+    color: #b8b8b8;
+    font-size: 14px;
+    margin: 8px 0;
+}
+
+.footer-links {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.footer-links h3 {
+    color: #ff4b1f;
+    font-size: 17px;
+    margin: 0 0 5px;
+}
+
+.footer-links a {
+    color: #c5c5c5;
+    text-decoration: none;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: #ff4b1f;
+}
+
+.footer-bottom {
+    border-top: 1px solid #383838;
+    padding-top: 20px;
+    text-align: center;
+}
+
+.footer-bottom p {
+    color: #888;
+    font-size: 13px;
+    margin: 0;
+}
+
+.logOut{
+    
+    background: none;
+    border: none;
+    color: white;
+    transition: all .3s ease;
+}
+.logOut:hover{
+    transform: scale(1.1);
+    color: black;
+    color: orangered;
+}
+
+.logOutD{
+    background: none;
+    border: none;
+    color: #c5c5c5;
+    font-size: 17px;
+    transition: all .3s ease;
+}
+.logOutD:hover{
+    transform: scale(1.1);
+    color: black;
+    color: orangered;
+}
+
+button{
+    font-family: "Asap sharp", sans-serif;
+    font-size: 24px;
+    cursor: pointer;
+    
+}
+
+@media (max-width: 600px) {
+    .footer-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px 20px;
+    }
+
+    .footer-brand {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 698px){
+
+    header{
+        margin-top: 0;
+        
+    }
+
+    .hat{
+        display: flex;
+    align-items: center;
+    width:90%;
+    margin: 0 auto;
+    background-color: #171a1c9c;
+    height:70px;
+    border-radius: 15px;
+    padding: 10px;
+    padding-left: 25px;
+    padding-right: 25px;
+        
+    }
+
+    header h1{
+        display: none;
+    }
+
+    .links{
+        display: flex;
+        gap:15px    
+    }
+
+    .links img{
+        width: 30px;
+        height: 30px;
+    }
+
+    
+
+}
+
+@media (min-width: 699px) and (max-width:840px){
+    .slogan1{
+        display: none;
+    }
+
+}
+
+@media (min-width:940px) and (max-width:1400px){
+
+    .slogan1{
+        display: none;
+    }
+}
