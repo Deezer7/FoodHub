@@ -119,7 +119,7 @@ function cartRender() {
 
         let img = document.createElement("img")
         img.classList.add("Iimg")
-        img.src = item.img
+        img.src = "/foto/" + item.img
 
         let price = document.createElement("p")
         price.classList.add("Iprice")
@@ -185,17 +185,18 @@ function calcTotal() {
 
 
 
-let placeOrderBut = document.querySelector(".placeOrder")
-
+let placeOrderBut = document.querySelector(".placeOrderBut")
+let placeOrder = document.querySelector(".placeOrder")
 placeOrderBut.addEventListener("click", function(){
 
    
 
     let confirmWindow = document.createElement("div")
-    cartCont.appendChild(confirmWindow)
+    placeOrder.appendChild(confirmWindow)
     let text = document.createElement("p")
     text.textContent = "Place order?"
     confirmWindow.appendChild(text)
+    placeOrderBut.classList.add("hidden")
 
     let confirmBut = document.createElement("button")
     confirmBut.textContent = "Place order"
@@ -246,6 +247,7 @@ placeOrderBut.addEventListener("click", function(){
     rejectButton.addEventListener("click", function(){
 
         confirmWindow.remove()
+        placeOrderBut.classList.remove("hidden")
 
     })
 
